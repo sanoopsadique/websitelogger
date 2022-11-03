@@ -19,5 +19,5 @@ jobs:
       run: |
         cat ./code/sitename.txt >> "${{ tag }}
         echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin docker.io
-        docker build . --tag sanoopsadique/websitelogger:$tag
-        docker push docker.io/sanoopsadique/websitelogger:$tag
+        docker build . --tag sanoopsadique/websitelogger:${tag}
+        docker push docker.io/sanoopsadique/websitelogger:${tag}
