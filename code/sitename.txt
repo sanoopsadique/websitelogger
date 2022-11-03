@@ -1,1 +1,1 @@
-google1
+sitename=www.google.ca
