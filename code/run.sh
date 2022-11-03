@@ -1,1 +1,1 @@
-echo "This is container"
+echo This is container
