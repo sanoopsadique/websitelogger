@@ -1,7 +1,9 @@
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import time, os, datetime
-import subprocess, os #sys
+import subprocess
+#import os 
+import sys
 
 
 hostName = ""
@@ -11,11 +13,11 @@ page = ""
 
 if __name__ == "__main__":        
     
-    #page = sys.argv[1]
-    #interval = sys.argv[2]
+    page = sys.argv[1]
+    interval = sys.argv[2]
     
-    page = os.environ['website']
-    interval = os.environ['interval']
+    #page = os.environ['website']
+    #interval = os.environ['interval']
     
     
     p = subprocess.Popen(["python3","/weblogger/web.py",interval])
