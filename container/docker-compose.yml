@@ -1,12 +1,10 @@
 version: "1.0"
 
-services:
-  
-  image: sanoopsadique/websitelogger:latest
-  ports:
-    - "9999:80"
-  args:
-    - website = "https://sanoop.sadique.ca"
-    - interval = "10"
-  
-  tty: true
+image: sanoopsadique/websitelogger:latest
+ports:
+  - "9999:80"
+args:
+  - website = "https://sanoop.sadique.ca"
+  - interval = "10"
+
+tty: true
