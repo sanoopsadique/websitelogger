@@ -1,70 +1,49 @@
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import time, os, datetime
+import subprocess,sys
 
 
 hostName = ""
 serverPort = 80
-service = ""
-refresh = 5
+page = ""
 
-class MyServer(BaseHTTPRequestHandler): 
-    def do_GET(self):
-        global service
-        global refresh
-        self.send_response(200)
-        status = os.popen("systemctl is-active "+service).read().rstrip()
-        if status =="active":
-            color = "green"
+
+if __name__ == "__main__":        
+    
+    page = sys.argv[1]
+    interval = int(sys.argv[2])
+    p = subprocess.Popen(["python ","web.py",sys.argv[2]])
+    with open("status","wt") as f:
+        f.write("Program started")
+    while True:
+        statusCode = os.popen("curl -s -o /dev/null -w \"%{http_code}\" "+page).read().rstrip()
+        now = datetime.datetime.now()
+        
+        if statusCode == '000':
+            msg = "<a style=\"color:red;\">"+now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" not responding</a>\n"
+        
+        elif statusCode[0] == '2':
+            msg = "<a style=\"color:green;\">"+now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is Running</a>\n"
+        
+        elif statusCode[0] == '3':
+            redirectPage = os.popen("curl -s -o /dev/null -w \"%{redirect_url}\" "+page).read().rstrip()
+            msg = "<a style=\"color:blue;\">"+now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is Redirecting to "+redirectPage+"</a>\n"
+        
+        elif statusCode[0] == '4':
+            msg = "<a style=\"color:red;\">"+now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is not allowing access</a>\n"
+        
+        elif statusCode[0] == '5':
+            msg = "<a style=\"color:red;\">"+now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is having server issues</a>\n"
+        
         else:
-            color = "red"
-        now = datetime.datetime.now() 
-        msg = "<a style=\"color:"+color+";\">"+now.strftime("%y-%m-%d-%H:%M:%S")+" - "+service+" is "+status+"</a>\n"
+            msg = "<a style=\"color:red;\">"+now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" returned unknown status code "+statusCode+"</a>\n"
+            
         with open("status","rt") as f:
             for line in f:
                 msg = msg+line
         with open("status","wt") as f:
             f.write(msg)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
-        self.wfile.write(bytes("<html><head><title>SMART Status</title><meta http-equiv=\"refresh\" content=\""+str(refresh)+"\"></head>", "utf-8"))
-        filePath = self.path[1:]
-        if filePath == '':
-            filePath = "status"
-        self.wfile.write(bytes("<body>", "utf-8"))
-        with open(filePath) as f:	
-            for line in f:
-                self.wfile.write(bytes(line, "utf-8"))
-                self.wfile.write(bytes("</br>", "utf-8"))
-        self.wfile.write(bytes("</body></html>", "utf-8"))
-
-if __name__ == "__main__":        
-    while True:
-        service = input("Enter service name: ")
-        if service == '':
-            continue
-        status = os.popen("systemctl is-active "+service).read().rstrip()
-        if status == 'unknown':
-            print(service + " not installed, Please try again")
-        else:
-            with open("status","wt") as f:
-                f.write("")
-            break
-    refresh = input("Enter refresh time in seconds[default = 3]: ")
-    if type(refresh) == float:
-        refresh = int(refresh)+1
-    elif type(refresh) != int:
-        refresh = 3
-    if refresh < 0:
-        refresh = -1 * refresh
-    print("Page will auto-refresh in "+ str(refresh)+" seconds")
-    webServer = HTTPServer((hostName, serverPort), MyServer)
-    print("Server started. Visit http://ip-address:%s" % serverPort)
-
-    try:
-        webServer.serve_forever()
-    except KeyboardInterrupt:
-        pass
-
-    webServer.server_close()
-    print("Server stopped.")
+        time.sleep(interval-1)   
+        
+    

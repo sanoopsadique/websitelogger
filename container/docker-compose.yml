@@ -1,0 +1,9 @@
+maillinker:
+  image: sanoopsadique/uptimetracker
+  ports:
+    - "9999:80"
+  args:
+    - website = https://sanoop.sadique.ca
+    - gitcommithash = 10
+  
+  tty: true
