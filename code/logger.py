@@ -13,7 +13,7 @@ if __name__ == "__main__":
     
     page = sys.argv[1]
     interval = int(sys.argv[2])
-    p = subprocess.Popen(["python3","web.py",sys.argv[2]])
+    p = subprocess.Popen(["python3","./web.py",sys.argv[2]])
     with open("status","wt") as f:
         f.write("Program started")
     while True:
