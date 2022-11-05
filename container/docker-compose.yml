@@ -1,9 +1,12 @@
-maillinker:
-  image: sanoopsadique/uptimetracker
-  ports:
-    - "9999:80"
-  args:
-    - website = https://sanoop.sadique.ca
-    - interval = 10
-  
-  tty: true
+version: "1.0"
+
+services:
+  app:
+    image: sanoopsadique/websitelogger:latest
+    ports:
+      - "9999:80"
+    args:
+      - website = "https://sanoop.sadique.ca"
+      - interval = "10"
+    
+    tty: true
