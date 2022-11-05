@@ -1,7 +1,7 @@
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import time, os, datetime
-import subprocess,sys
+import subprocess, os #sys
 
 
 hostName = ""
@@ -11,9 +11,14 @@ page = ""
 
 if __name__ == "__main__":        
     
-    page = sys.argv[1]
-    interval = int(sys.argv[2])
-    p = subprocess.Popen(["python3","/weblogger/web.py",sys.argv[2]])
+    #page = sys.argv[1]
+    #interval = sys.argv[2]
+    
+    page = os.environ['website']
+    interval = os.environ['interval']
+    
+    
+    p = subprocess.Popen(["python3","/weblogger/web.py",interval])
     with open("status","wt") as f:
         f.write("Program started")
     while True:
@@ -44,6 +49,6 @@ if __name__ == "__main__":
                 msg = msg+line
         with open("status","wt") as f:
             f.write(msg)
-        time.sleep(interval-1)   
+        time.sleep(int(interval))   
         
     
