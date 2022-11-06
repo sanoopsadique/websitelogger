@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-website = $1
+$website = $1
 if [ $2 == '' ]
   then
     interval = '60'

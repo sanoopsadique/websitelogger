@@ -20,7 +20,7 @@ if __name__ == "__main__":
     #interval = os.environ['interval']
     
     
-    p = subprocess.Popen(["python3","/weblogger/web.py",interval])
+    p = subprocess.Popen(["python3","./web.py",interval])
     with open("status","wt") as f:
         f.write("Program started")
     while True:
