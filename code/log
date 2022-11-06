@@ -8,6 +8,6 @@ if [ $2 == '' ]
     interval = $2
 fi
 
-echo website
-echo interval
-python3 logger.py website interval    
+echo $website
+echo $interval
+python3 logger.py $website $interval    
