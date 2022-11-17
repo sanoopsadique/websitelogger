@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 website = $1
 interval = '60'
