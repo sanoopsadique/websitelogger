@@ -6,7 +6,4 @@ if [ $2 != '' ]
   then
     interval=$2
 fi
-
-echo $website
-echo $interval
-#python3 logger.py $website $interval    
+python3 ./logger.py $website $interval    
