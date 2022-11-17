@@ -1,10 +1,10 @@
 #!/bin/sh
 
-var website = $1
-var interval = '60'
+website=$1
+interval='60'
 if [ $2 != '' ]
   then
-    interval = $2
+    interval=$2
 fi
 
 echo $website
