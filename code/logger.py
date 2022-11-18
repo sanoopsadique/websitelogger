@@ -32,37 +32,37 @@ if __name__ == "__main__":
         now = datetime.datetime.now()
         
         if statusCode == '000':
-            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" not responding\n"
-            web = "<a style=\"color:red;\">"+log+"</a>\n"
+            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" not responding"
+            web = "<a style=\"color:red;\">"+log+"</a>"
         
         elif statusCode[0] == '2':
-            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is Running\n"
-            web = "<a style=\"color:green;\">"+log+"</a>\n"
+            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is Running"
+            web = "<a style=\"color:green;\">"+log+"</a>"
         
         elif statusCode[0] == '3':
             redirectPage = os.popen("curl -s -o /dev/null -w \"%{redirect_url}\" "+page).read().rstrip()
-            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is Redirecting to "+redirectPage+"\n"
-            web = "<a style=\"color:blue;\">"+log+"</a>\n"
+            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is Redirecting to "+redirectPage+""
+            web = "<a style=\"color:blue;\">"+log+"</a>"
         
         elif statusCode[0] == '4':
-            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is not allowing access\n"
-            web = "<a style=\"color:red;\">"+log+"</a>\n"
+            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is not allowing access"
+            web = "<a style=\"color:red;\">"+log+"</a>"
                     
         elif statusCode[0] == '5':
-            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" have server issues\n"
-            web = "<a style=\"color:red;\">"+log+"</a>\n"
+            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" have server issues"
+            web = "<a style=\"color:red;\">"+log+"</a>"
         
         else:
-            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" returned unknown status code "+statusCode+"\n"
-            web = "<a style=\"color:red;\">"+log+"</a>\n"
+            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" returned unknown status code "+statusCode+""
+            web = "<a style=\"color:red;\">"+log+"</a>"
             
         with open("status","rt") as f:
             for line in f:
                 web = web+line
         with open("status","wt") as f:
-            f.write(web)
+            f.write(web+"\n")
         with open(logFile,"at") as f:
-            f.write(log)
+            f.write(log+"\n")
         time.sleep(int(interval))   
         
     
