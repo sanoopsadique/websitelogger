@@ -2,7 +2,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import time, os, datetime
 import subprocess
-#import os 
 import sys
 
 
@@ -11,11 +10,16 @@ serverPort = 80
 page = ""
 
 
+
 if __name__ == "__main__":        
     
     page = sys.argv[1]
     interval = sys.argv[2]
-    
+    logFile = "/logger/"+page
+
+    if not os.path.exists(logFile):
+        with open(logFile,"wt") as f:
+            f.write("Status log of "+page+"\n")
     #page = os.environ['website']
     #interval = os.environ['interval']
     
@@ -28,29 +32,37 @@ if __name__ == "__main__":
         now = datetime.datetime.now()
         
         if statusCode == '000':
-            msg = "<a style=\"color:red;\">"+now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" not responding</a>\n"
+            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" not responding\n"
+            web = "<a style=\"color:red;\">"+log+"</a>\n"
         
         elif statusCode[0] == '2':
-            msg = "<a style=\"color:green;\">"+now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is Running</a>\n"
+            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is Running\n"
+            web = "<a style=\"color:green;\">"+log+"</a>\n"
         
         elif statusCode[0] == '3':
             redirectPage = os.popen("curl -s -o /dev/null -w \"%{redirect_url}\" "+page).read().rstrip()
-            msg = "<a style=\"color:blue;\">"+now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is Redirecting to "+redirectPage+"</a>\n"
+            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is Redirecting to "+redirectPage+"\n"
+            web = "<a style=\"color:blue;\">"+log+"</a>\n"
         
         elif statusCode[0] == '4':
-            msg = "<a style=\"color:red;\">"+now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is not allowing access</a>\n"
-        
+            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is not allowing access\n"
+            web = "<a style=\"color:red;\">"+log+"</a>\n"
+                    
         elif statusCode[0] == '5':
-            msg = "<a style=\"color:red;\">"+now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is having server issues</a>\n"
+            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" have server issues\n"
+            web = "<a style=\"color:red;\">"+log+"</a>\n"
         
         else:
-            msg = "<a style=\"color:red;\">"+now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" returned unknown status code "+statusCode+"</a>\n"
+            log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" returned unknown status code "+statusCode+"\n"
+            web = "<a style=\"color:red;\">"+log+"</a>\n"
             
         with open("status","rt") as f:
             for line in f:
-                msg = msg+line
+                web = web+line
         with open("status","wt") as f:
-            f.write(msg)
+            f.write(web)
+        with open(logFile,"at") as f:
+            f.write(log)
         time.sleep(int(interval))   
         
     
