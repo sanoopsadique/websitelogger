@@ -33,28 +33,28 @@ if __name__ == "__main__":
         
         if statusCode == '000':
             log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" not responding"
-            web = "<a style=\"color:red;\">"+log+"</a>"
+            web = "<p style=\"color:red;\">"+log+"</p>"
         
         elif statusCode[0] == '2':
             log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is Running"
-            web = "<a style=\"color:green;\">"+log+"</a>"
+            web = "<p style=\"color:green;\">"+log+"</p>"
         
         elif statusCode[0] == '3':
             redirectPage = os.popen("curl -s -o /dev/null -w \"%{redirect_url}\" "+page).read().rstrip()
             log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is Redirecting to "+redirectPage+""
-            web = "<a style=\"color:blue;\">"+log+"</a>"
+            web = "<p style=\"color:blue;\">"+log+"</p>"
         
         elif statusCode[0] == '4':
             log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" is not allowing access"
-            web = "<a style=\"color:red;\">"+log+"</a>"
+            web = "<p style=\"color:red;\">"+log+"</p>"
                     
         elif statusCode[0] == '5':
             log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" have server issues"
-            web = "<a style=\"color:red;\">"+log+"</a>"
+            web = "<p style=\"color:red;\">"+log+"</p>"
         
         else:
             log = now.strftime("%y-%m-%d-%H:%M:%S")+" - "+page+" returned unknown status code "+statusCode+""
-            web = "<a style=\"color:red;\">"+log+"</a>"
+            web = "<p style=\"color:red;\">"+log+"</p>"
             
         with open("status","rt") as f:
             for line in f:
