@@ -5,4 +5,4 @@ if [ $2 != '' ]
   then
     interval=$2
 fi
-python3 ./logger.py $website $interval    
+python3 /logger.py $website $interval    
