@@ -15,7 +15,7 @@ if __name__ == "__main__":
     
     page = sys.argv[1]
     interval = sys.argv[2]
-    logFile = "/logger/"+page
+    logFile = "/logger/"+page+".txt"
 
     if not os.path.exists(logFile):
         with open(logFile,"wt") as f:
